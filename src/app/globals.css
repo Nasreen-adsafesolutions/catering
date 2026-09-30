@@ -7,6 +7,7 @@
   --color-ink: #14110f;
   --color-orange: #b85d2a;
   --color-yolk: #d89f3a;
+  --color-red: #c23b2e;
 
   --font-display: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-serif: var(--font-fraunces), Georgia, Cambria, serif;

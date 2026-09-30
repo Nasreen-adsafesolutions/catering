@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you trigger a deploy manually from the Actions tab without a push.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; if a new push lands mid-deploy, finish it
+# rather than cancel it, and let the newer push queue up after.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build static export
+        env:
+          # Switches next.config.ts into `output: "export"` and prefixes every
+          # URL with /<repo>, since a GitHub Pages project site is served from
+          # https://<user>.github.io/<repo>/, not the domain root.
+          GITHUB_PAGES: "true"
+        run: npm run build
+
+      # GitHub Pages runs Jekyll by default, which ignores files/folders
+      # starting with an underscore — that would silently drop Next's
+      # /_next asset directory. This opts out of Jekyll processing entirely.
+      - run: touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

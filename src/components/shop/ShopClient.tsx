@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Category, Mood, MoodId, Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -9,7 +10,10 @@ import { ProductCard } from "./ProductCard";
 
 type Sort = "featured" | "price-asc" | "price-desc" | "rating";
 
-export function ShopClient({ products, moods, initialCategory }: { products: Product[]; moods: Mood[]; initialCategory?: string }) {
+export function ShopClient({ products, moods }: { products: Product[]; moods: Mood[] }) {
+  // Read on the client (not via the server `searchParams` prop) so /shop?cat=Popcorn
+  // deep-links from the footer still work on a static export with no server to render per-request.
+  const initialCategory = useSearchParams().get("cat") ?? undefined;
   const categories = useMemo(() => ["All", ...Array.from(new Set(products.map((p) => p.category)))] as ("All" | Category)[], [products]);
   const [cat, setCat] = useState<string>(categories.includes(initialCategory as Category) ? initialCategory! : "All");
   const [mood, setMood] = useState<MoodId | "all">("all");
