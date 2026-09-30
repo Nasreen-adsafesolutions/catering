@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CRUNCH & CO.
 
-## Getting Started
-
-First, run the development server:
+Premium snack-brand storefront. Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · Framer Motion.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> Node 18 is supported (hence Next 15 / Tailwind 4.1). On Node ≥ 20 you can upgrade both.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/                 routes: / · /shop · /product/[slug] · /[page] (about, faqs, …)
+  components/
+    art/               procedural SVG snacks + <SnackImage> (photo-or-artwork slot)
+    layout/            Header, CartDrawer, SearchDialog, Footer, providers
+    sections/          one file per homepage section
+    shop/              ProductCard, AddToCart, quantity control, shop filters
+    ui/                Button, Magnetic, SplitText, Stars, NewsletterForm
+  context/             CartContext (persisted) · ToastContext
+  data/                mock products + editorial content
+  lib/api.ts           async data layer — swap bodies for CMS/API calls
+  lib/images.ts        resolves /public/images/<key>.* → real photo, else artwork
+```
 
-## Learn More
+## Swapping in real data
 
-To learn more about Next.js, take a look at the following resources:
+All data flows through `src/lib/api.ts` (`getProducts`, `getIngredients`, …). Each returns plain
+serialisable objects typed in `src/lib/types.ts`, so pointing them at a CMS/API changes nothing
+else. Prices, categories, moods, ingredients and images are all fields on those types.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Images
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See [IMAGES.md](./IMAGES.md). Drop photography into `public/images/` and it replaces the built-in
+artwork automatically.
 
-## Deploy on Vercel
+## Motion
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Kept deliberately light: simple fade/fade-up reveals on scroll (Framer Motion `whileInView`, once
+each), a couple of short user-triggered springs (cart, toasts, size picker), and one CSS keyframe
+(`animate-float`) for a handful of decorative pieces. Scrolling is native (no smooth-scroll
+library) — it's cheaper and already smooth by default. The marquee is pure CSS
+(`.marquee-track` in `globals.css`), so it costs nothing on the main thread. There are no
+scroll-scrubbed or pinned sections and no per-frame JavaScript loops anywhere in the app.
+`MotionConfig reducedMotion="user"` makes every animation respect `prefers-reduced-motion`
+automatically; the magnetic button effect only runs on fine pointers (mouse), never touch.
