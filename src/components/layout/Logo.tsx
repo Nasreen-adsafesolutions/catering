@@ -4,7 +4,7 @@ import { Piece } from "../art/Pieces";
 
 export function Logo({ className, light }: { className?: string; light?: boolean }) {
   return (
-    <Link href="/" aria-label="Crunch & Co. — home" className={cn("group inline-flex items-center gap-2.5", className)}>
+    <Link href="/snacks" aria-label="Crunch & Co. — home" className={cn("group inline-flex items-center gap-2.5", className)}>
       <span className="grid h-9 w-9 place-items-center rounded-full bg-orange transition-transform duration-500 group-hover:rotate-[24deg]">
         <Piece kind="chip" className="h-6 w-6" rotate={-10} />
       </span>

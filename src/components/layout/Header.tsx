@@ -12,9 +12,9 @@ import { SearchDialog } from "./SearchDialog";
 
 const links = [
   { href: "/shop", label: "Shop" },
-  { href: "/#moods", label: "Flavours" },
-  { href: "/#box", label: "Build a Box" },
-  { href: "/#story", label: "Our Story" },
+  { href: "/snacks#moods", label: "Flavours" },
+  { href: "/snacks#box", label: "Build a Box" },
+  { href: "/snacks#story", label: "Our Story" },
 ];
 
 export function Header({ products }: { products: Product[] }) {

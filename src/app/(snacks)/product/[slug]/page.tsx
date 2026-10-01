@@ -34,7 +34,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="mx-auto max-w-[1500px] px-5 pb-28 pt-28 md:px-10 md:pt-36">
       <nav aria-label="Breadcrumb" className="mb-8 text-sm text-choc/55">
-        <Link href="/" className="hover:text-orange">Home</Link> / <Link href="/shop" className="hover:text-orange">Shop</Link> / <span className="text-choc">{product.name}</span>
+        <Link href="/snacks" className="hover:text-orange">Home</Link> / <Link href="/shop" className="hover:text-orange">Shop</Link> / <span className="text-choc">{product.name}</span>
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
