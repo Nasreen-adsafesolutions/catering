@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
   // per-request server data, so this is a plain switch, not a rewrite of the app.
   ...(process.env.GITHUB_PAGES ? { output: "export" as const } : {}),
   basePath,
+  // exposed to client code so unoptimized <Image> srcs can be prefixed (Next doesn't do it for them)
+  env: { NEXT_PUBLIC_BASE_PATH: basePath },
   assetPrefix: basePath,
   images: {
     formats: ["image/avif", "image/webp"],

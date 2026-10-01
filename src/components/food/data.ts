@@ -1,3 +1,5 @@
+import { asset } from "@/lib/utils";
+
 export type CategoryId = "burgers" | "italian" | "asian" | "healthy" | "sweet";
 
 export interface Dish {
@@ -23,7 +25,7 @@ export interface Restaurant {
   image: string;
 }
 
-const img = (name: string) => `/images/food/${name}.jpg`;
+const img = (name: string) => asset(`/images/food/${name}.jpg`);
 
 export const DISHES: Dish[] = [
   { id: "smash", name: "Double Smash Burger", place: "Alley Grill", price: 13.5, rating: 4.9, minutes: 22, image: img("burger"), tag: "Bestseller" },

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/utils";
 import { Reveal } from "./Reveal";
 
 function StoreButton({ top, name }: { top: string; name: string }) {
@@ -29,7 +30,7 @@ export function AppCta() {
               <div className="rotate-[4deg] rounded-[2.5rem] border-[8px] border-paper/90 bg-paper p-3 text-crust shadow-2xl shadow-black/40 transition-transform duration-500 hover:rotate-[1deg]">
                 <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-crust/15" />
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
-                  <Image src="/images/food/burger.jpg" alt="" fill sizes="260px" className="object-cover" />
+                  <Image src={asset("/images/food/burger.jpg")} alt="" fill sizes="260px" className="object-cover" />
                 </div>
                 <p className="mt-3 font-head text-lg font-bold">Your order is on its way</p>
                 <p className="text-sm text-crust/55">Alley Grill · Courier: Sam</p>

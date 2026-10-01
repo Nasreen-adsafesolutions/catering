@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import { asset } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 
 export function Hero() {
@@ -58,7 +59,7 @@ export function Hero() {
           <motion.div style={{ y: lift }} className="relative">
             <div className="relative aspect-[5/6] overflow-hidden rounded-[2.5rem] bg-tomato md:rounded-[3.5rem]">
               <motion.div style={{ scale }} className="absolute inset-0 will-change-transform">
-                <Image src="/images/food/hero.jpg" alt="A fresh pizza topped with pepperoni, olives and peppers on an orange table" fill priority sizes="(min-width: 1024px) 540px, 90vw" className="object-cover" />
+                <Image src={asset("/images/food/hero.jpg")} alt="A fresh pizza topped with pepperoni, olives and peppers on an orange table" fill priority sizes="(min-width: 1024px) 540px, 90vw" className="object-cover" />
               </motion.div>
             </div>
 
