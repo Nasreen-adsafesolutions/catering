@@ -9,6 +9,15 @@ npm run build && npm start
 
 > Node 18 is supported (hence Next 15 / Tailwind 4.1). On Node ≥ 20 you can upgrade both.
 
+## Netlify deployment
+
+Connect this repository to Netlify. `netlify.toml` sets `npm run build`, Node 22,
+and the `.next` publish directory. Netlify automatically applies its Next.js
+adapter; do not add a catch-all rewrite to `/index.html`.
+
+Leave `GITHUB_PAGES` and `NEXT_DIST_DIR` unset on Netlify. The GitHub Pages
+workflow uses a separate static export configuration.
+
 ## Structure
 
 ```
