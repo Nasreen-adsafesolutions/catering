@@ -6,14 +6,15 @@ import type { NextConfig } from "next";
 // build`/`npm run dev` behave exactly as before (served from the domain root).
 const repo = process.env.GITHUB_REPOSITORY?.split("/")[1];
 const basePath = process.env.GITHUB_PAGES && repo ? `/${repo}` : "";
+const staticExport = !!process.env.GITHUB_PAGES || process.env.STATIC_EXPORT === "true";
 
 const nextConfig: NextConfig = {
   // lets a production build live beside a running `next dev` (NEXT_DIST_DIR=.next-prod)
   distDir: process.env.NEXT_DIST_DIR || ".next",
-  // Static HTML export for GitHub Pages — no Node server, no image optimization endpoint,
+  // Static HTML export for static hosting — no Node server, no image optimization endpoint,
   // no server-side searchParams. Every route here already has generateStaticParams or no
   // per-request server data, so this is a plain switch, not a rewrite of the app.
-  ...(process.env.GITHUB_PAGES ? { output: "export" as const } : {}),
+  ...(staticExport ? { output: "export" as const } : {}),
   basePath,
   // exposed to client code so unoptimized <Image> srcs can be prefixed (Next doesn't do it for them)
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
@@ -21,7 +22,7 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     // Next's built-in image optimizer needs a server; static export has none.
-    unoptimized: !!process.env.GITHUB_PAGES,
+    unoptimized: staticExport,
   },
 };
 

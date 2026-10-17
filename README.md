@@ -12,8 +12,10 @@ npm run build && npm start
 ## Netlify deployment
 
 Connect this repository to Netlify. `netlify.toml` sets `npm run build`, Node 22,
-and the `.next` publish directory. Netlify automatically applies its Next.js
-adapter; do not add a catch-all rewrite to `/index.html`.
+and `STATIC_EXPORT=true` to generate the `out` publish directory. All current
+routes support static export, so no Next.js server adapter is required. Images
+are served without server-side optimization. Do not add a catch-all rewrite
+to `/index.html`; each route has its own exported HTML page.
 
 Leave `GITHUB_PAGES` and `NEXT_DIST_DIR` unset on Netlify. The GitHub Pages
 workflow uses a separate static export configuration.
