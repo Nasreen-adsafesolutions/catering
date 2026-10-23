@@ -4,15 +4,15 @@ import { Featured } from "@/components/sections/Featured";
 import { Hero } from "@/components/sections/Hero";
 import { MoodPicker } from "@/components/sections/MoodPicker";
 import { Reviews } from "@/components/sections/Reviews";
-import { getFeaturedProducts, getMoods, getProducts, getReviews, getSiteImages } from "@/lib/api";
+import { getFeaturedProducts, getMoods, getProducts, getReviews, getSiteContent, getSiteImages } from "@/lib/api";
 
 export default async function Home() {
-  const [featured, products, moods, reviews, images] = await Promise.all([
-    getFeaturedProducts(), getProducts(), getMoods(), getReviews(), getSiteImages(),
+  const [featured, products, moods, reviews, images, content] = await Promise.all([
+    getFeaturedProducts(), getProducts(), getMoods(), getReviews(), getSiteImages(), getSiteContent(),
   ]);
   return (
     <>
-      <Hero image={images.hero} />
+      <Hero image={images.hero} content={content.hero} />
       <Featured products={featured} />
       <MoodPicker moods={moods} products={products} />
       <BoxBuilder products={products} />

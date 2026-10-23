@@ -35,12 +35,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               transition={{ type: "spring", stiffness: 420, damping: 30 }}
-              className="pointer-events-auto flex items-center gap-4 rounded-xl bg-choc py-3 pl-4 pr-3 text-sm font-medium text-cream shadow-2xl shadow-choc/30"
+              className="pointer-events-auto flex items-center gap-4 rounded-xl bg-crust py-3 pl-4 pr-3 text-sm font-medium text-paper shadow-2xl shadow-crust/30"
             >
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-orange text-xs">✓</span>
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-tomato text-xs">✓</span>
               {t.message}
               {t.action && (
-                <button onClick={t.action.onClick} className="rounded-lg bg-cream/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition hover:bg-cream/20">
+                <button onClick={t.action.onClick} className="rounded-lg bg-paper/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition hover:bg-paper/20">
                   {t.action.label}
                 </button>
               )}

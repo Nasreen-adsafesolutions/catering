@@ -11,18 +11,9 @@ export type PieceKind =
   | "caramel"
   | "spice";
 
-export type MoodId = "spicy" | "sweet" | "salty" | "crunchy" | "light" | "party";
+export type MoodId = string;
 
-export type Category =
-  | "Chips"
-  | "Nachos"
-  | "Popcorn"
-  | "Nuts"
-  | "Chocolate"
-  | "Cookies"
-  | "Granola"
-  | "Trail Mix"
-  | "Boxes";
+export type Category = string;
 
 /** Drives the designed fallback artwork shown until a real photo exists. */
 export interface ArtSpec {

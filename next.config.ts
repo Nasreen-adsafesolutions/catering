@@ -20,6 +20,8 @@ const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_BASE_PATH: basePath },
   assetPrefix: basePath,
   images: {
+    // CMS uploads are served by the API host
+    remotePatterns: process.env.CMS_API_URL ? [new URL(process.env.CMS_API_URL)].map((u) => ({ protocol: u.protocol.replace(":", "") as "http" | "https", hostname: u.hostname, port: u.port })) : [],
     formats: ["image/avif", "image/webp"],
     // Next's built-in image optimizer needs a server; static export has none.
     unoptimized: staticExport,

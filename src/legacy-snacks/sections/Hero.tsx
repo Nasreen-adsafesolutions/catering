@@ -11,7 +11,9 @@ import { SplitText } from "../ui/SplitText";
 
 const HERO_ART: ArtSpec = { bg: ["#E9DCC3", "#D8C49E"], accent: "#8A6D35", kinds: ["chip", "popcorn", "nut", "chilli", "corn"], label: "Smoky BBQ" };
 
-export function Hero({ image }: { image?: string }) {
+export interface HeroContent { badge?: string; line1?: string; line2?: string; text?: string; cta_label?: string; note?: string }
+
+export function Hero({ image, content = {} }: { image?: string; content?: HeroContent }) {
   // One light, scoped scroll effect on the product visual only — a gentle
   // scale as it comes into view, not a page-wide scroll-scrub.
   const imgWrapRef = useRef<HTMLDivElement>(null);
@@ -23,19 +25,19 @@ export function Hero({ image }: { image?: string }) {
       <div className="mx-auto grid max-w-[1500px] items-center gap-12 px-5 pb-20 pt-32 md:grid-cols-2 md:gap-10 md:px-10 md:pb-28 md:pt-40">
         <div className="max-w-xl">
           <motion.span initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="inline-flex items-center gap-2 rounded-full bg-red/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-red">
-            Home-made · Fresh weekly
+            {content.badge || "Home-made · Fresh weekly"}
           </motion.span>
           <h1 className="mt-6 font-serif text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.03] tracking-[-0.04em]">
-            <SplitText immediate text="Something good" delay={0.15} />
+            <SplitText immediate text={content.line1 || "Something good"} delay={0.15} />
             <br />
-            <SplitText immediate text="for the cupboard." delay={0.25} className="italic text-orange" />
+            <SplitText immediate text={content.line2 || "for the cupboard."} delay={0.25} className="italic text-orange" />
           </h1>
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-6 max-w-sm text-base leading-relaxed text-choc/70 md:text-lg">
-            Smoky chips, salted popcorn, a little chocolate. Pick your favourites and keep a few bags handy.
+            {content.text || "Smoky chips, salted popcorn, a little chocolate. Pick your favourites and keep a few bags handy."}
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.55 }} className="mt-9 flex flex-wrap items-center gap-6">
-            <Magnetic><Button href="/shop" size="lg">Shop all snacks <Arrow /></Button></Magnetic>
-            <p className="text-xs text-choc/55">Free UK delivery on orders over £25</p>
+            <Magnetic><Button href="/shop" size="lg">{content.cta_label || "Shop all snacks"} <Arrow /></Button></Magnetic>
+            <p className="text-xs text-choc/55">{content.note ?? "Free delivery on orders over ₹500"}</p>
           </motion.div>
         </div>
 

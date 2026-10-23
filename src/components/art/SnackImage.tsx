@@ -15,7 +15,16 @@ interface Props {
 }
 
 /** Fills its (relative) parent. Real photo when `src` exists, designed artwork otherwise. */
-export function SnackImage({ src, alt, art, variant = "product", sizes = "(min-width:1024px) 33vw, 100vw", priority, className, imgClassName }: Props) {
+export function SnackImage({
+  src,
+  alt,
+  art,
+  variant = "product",
+  sizes = "(min-width:1024px) 33vw, 100vw",
+  priority,
+  className,
+  imgClassName,
+}: Props) {
   if (!src) {
     return (
       <div className={cn("absolute inset-0", className)} role="img" aria-label={alt}>
@@ -23,11 +32,17 @@ export function SnackImage({ src, alt, art, variant = "product", sizes = "(min-w
       </div>
     );
   }
-  // Product shots are cut-outs on a tinted backdrop; lifestyle/macro shots are full-bleed.
-  const isCutout = variant === "product";
+
   return (
-    <div className={cn("absolute inset-0", className)} style={isCutout ? { background: `radial-gradient(110% 90% at 50% 25%, ${art.bg[0]}, ${art.bg[1]})` } : undefined}>
-      <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={cn(isCutout ? "object-contain p-6" : "object-cover", imgClassName)} />
+    <div className={cn("absolute inset-0 overflow-hidden bg-cream-2/40", className)}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={cn("object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105", imgClassName)}
+      />
     </div>
   );
 }

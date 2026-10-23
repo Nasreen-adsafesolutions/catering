@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function QuantityControl({ value, onChange, min = 0, max = 99, label, size = "md" }: { value: number; onChange: (n: number) => void; min?: number; max?: number; label: string; size?: "sm" | "md" }) {
-  const btn = cn("grid place-items-center rounded-full border border-choc/20 transition hover:border-orange hover:bg-orange hover:text-cream active:scale-90 disabled:opacity-30 disabled:hover:border-choc/20 disabled:hover:bg-transparent disabled:hover:text-inherit", size === "sm" ? "h-8 w-8" : "h-11 w-11");
+  const btn = cn("grid place-items-center rounded-full border border-crust/20 transition hover:border-tomato hover:bg-tomato hover:text-paper active:scale-90 disabled:opacity-30 disabled:hover:border-crust/20 disabled:hover:bg-transparent disabled:hover:text-inherit", size === "sm" ? "h-8 w-8" : "h-11 w-11");
   return (
     <div className="inline-flex items-center gap-2" role="group" aria-label={`Quantity for ${label}`}>
       <button type="button" className={btn} onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min} aria-label={`Decrease ${label}`}>

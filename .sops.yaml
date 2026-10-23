@@ -1,0 +1,14 @@
+creation_rules:
+  - path_regex: .env.local
+    key_groups:
+      - pgp:
+          # Nasreena S
+          - 145F018932E8DE80D3591A525985550B1FB5D8DA
+  - key_groups:
+      - pgp:
+          # Nasreena S
+          - 145F018932E8DE80D3591A525985550B1FB5D8DA
+
+#############################################
+## NOTE: PLEASE RESPECT ALPHABETICAL ORDER ##
+#############################################

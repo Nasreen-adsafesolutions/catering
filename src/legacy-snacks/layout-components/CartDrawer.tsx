@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { checkoutEnabled, placeOrder, type CheckoutForm } from "@/lib/checkout";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { FREE_SHIPPING_THRESHOLD, formatPrice } from "@/lib/utils";
@@ -15,6 +16,23 @@ export function CartDrawer() {
   const { open, setOpen, lines, subtotal, count, setQty, remove, clear } = useCart();
   const { push } = useToast();
   const close = () => setOpen(false);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState<CheckoutForm>({ name: "", phone: "", email: "", address: "", notes: "", event_date: "" });
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const r = await placeOrder(lines, form);
+      clear();
+      setCheckingOut(false);
+      close();
+      push(`Order ${r.number} received — we'll contact you to confirm.`);
+    } catch (err) {
+      push(err instanceof Error ? err.message : "Something went wrong");
+    }
+    setBusy(false);
+  };
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   useEffect(() => {
@@ -104,9 +122,21 @@ export function CartDrawer() {
                     <motion.span key={subtotal} initial={{ y: -8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="font-extrabold">{formatPrice(subtotal)}</motion.span>
                   </div>
                   <p className="text-xs text-choc/55">Shipping and taxes calculated at checkout.</p>
-                  <ButtonEl size="lg" className="w-full" onClick={() => { push("Checkout is a demo — no payment taken."); }}>
-                    Checkout
-                  </ButtonEl>
+                  {checkingOut ? (
+                    <form onSubmit={submit} className="space-y-2">
+                      {([["name", "Your name", true], ["phone", "Phone / WhatsApp", true], ["email", "Email (optional)", false], ["address", "Delivery address", true]] as const).map(([k, label, req]) => (
+                        <input key={k} required={req} placeholder={label} value={form[k]} onChange={(e) => setForm({ ...form, [k]: e.target.value })} className="w-full rounded-xl border border-choc/15 bg-cream px-4 py-2.5 text-sm" />
+                      ))}
+                      <input type="date" aria-label="Needed by" value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} className="w-full rounded-xl border border-choc/15 bg-cream px-4 py-2.5 text-sm" />
+                      <textarea placeholder="Notes (optional)" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="w-full rounded-xl border border-choc/15 bg-cream px-4 py-2.5 text-sm" />
+                      <ButtonEl size="lg" className="w-full" type="submit" disabled={busy}>{busy ? "Sending…" : "Place order"}</ButtonEl>
+                      <button type="button" onClick={() => setCheckingOut(false)} className="w-full text-center text-sm text-choc/50 hover:text-choc">Back</button>
+                    </form>
+                  ) : (
+                    <ButtonEl size="lg" className="w-full" onClick={() => (checkoutEnabled ? setCheckingOut(true) : push("Checkout is a demo — no payment taken."))}>
+                      Checkout
+                    </ButtonEl>
+                  )}
                   <button onClick={() => { clear(); push("Bag emptied"); }} className="w-full text-center text-sm text-choc/50 transition hover:text-choc">Clear bag</button>
                 </footer>
               </>
